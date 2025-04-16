@@ -11,11 +11,19 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
+cloudinary.config( 
+    cloud_name = "dvobuangr", 
+    api_key = "976242166451272", 
+    api_secret = "Ti4wSLhs59kxvIxX7AagEsueEq8", 
+    secure=True
+)
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
@@ -31,12 +39,21 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'cloudinary',
+    'cloudinary_storage',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'corsheaders',
+    'projects', 
+    
+    
+    
 ]
 
 MIDDLEWARE = [
@@ -44,10 +61,17 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+
+MEDIA_URL = '/media/'
 
 ROOT_URLCONF = 'backend_bessa.urls'
 
@@ -77,6 +101,23 @@ DATABASES = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
+}
+# settings.py
+
+JAZZMIN_SETTINGS = {
+    'site_title': 'Bessa Real Estate Admin',  # Title in the browser tab
+    'site_header': 'Bessa Real Estate Admin Panel',  # Header in the admin panel
+    'site_brand': 'Bessa Real Estate',  # Brand name (shown on top)
+    'site_logo': '/static/admin/img/logo.png',  # Optional custom logo
+    'login_logo': '/static/admin/img/logo.png',  # Optional custom logo for login page
+    'login_logo_colors': 'white',  # Custom logo colors (can be 'white', 'black', etc.)
+    'welcome_sign': 'Welcome to the Admin Panel!',  # Welcome message in the admin panel
+    'show_ui_builder': False,  # Disable the UI builder option
+    'icons': {
+        'auth': 'fas fa-users-cog',  # Example of custom icon for a Django app
+        'auth.user': 'fas fa-user',  # Example of custom icon for user model
+    },
+    # More settings can be added for customizing navigation and appearance...
 }
 
 
