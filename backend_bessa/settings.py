@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+import os
 from pathlib import Path
 import cloudinary
 import cloudinary.uploader
@@ -33,7 +34,13 @@ SECRET_KEY = 'django-insecure-)9b0ikxu=hw=m&8g+c%s0d4tyny&d7300=w=@sfdz9b0x^3hc8
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+]
+# CORS settings
+CORS_ALLOW_ALL_ORIGINS = True
+
 
 
 # Application definition
@@ -52,7 +59,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'projects', 
     
-    
+    'drf_spectacular',
+
     
 ]
 
@@ -98,10 +106,15 @@ WSGI_APPLICATION = 'backend_bessa.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('DATABASE_NAME', 'mydb'),
+        'USER': os.environ.get('DATABASE_USER', 'myuser'),
+        'PASSWORD': os.environ.get('DATABASE_PASSWORD', 'mypassword'),
+        'HOST': os.environ.get('DATABASE_HOST', 'localhost'),
+        'PORT': os.environ.get('DATABASE_PORT', '5432'),
     }
 }
+
 # settings.py
 
 JAZZMIN_SETTINGS = {
@@ -118,6 +131,16 @@ JAZZMIN_SETTINGS = {
         'auth.user': 'fas fa-user',  # Example of custom icon for user model
     },
     # More settings can be added for customizing navigation and appearance...
+}
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Bessa Real Estate API',
+    'DESCRIPTION': 'API documentation for Bessa real estate projects and agents.',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
 }
 
 

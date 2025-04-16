@@ -1,17 +1,29 @@
 from django.contrib import admin
-from .models import Project, Agent, FloorPlan
+from .models import Project, Agent, FloorPlan, GalleryImage
+
+class GalleryImageInline(admin.TabularInline):
+    model = GalleryImage
+    extra = 1
+
+class FloorPlanInline(admin.StackedInline):
+    model = FloorPlan
+    extra = 1
 
 @admin.register(Project)
 class ProjectAdmin(admin.ModelAdmin):
-    list_display = ('name', 'location', 'price', 'status', 'image')
+    inlines = [GalleryImageInline, FloorPlanInline]
+    list_display = ('name', 'location', 'price', 'status')
     search_fields = ('name', 'location', 'status')
 
 @admin.register(Agent)
 class AgentAdmin(admin.ModelAdmin):
-    list_display = ('name', 'title', 'phone', 'email')
-    search_fields = ('name',)
+    list_display = ('name', 'title', 'email')
+    search_fields = ('name', 'title', 'email')
+
+@admin.register(GalleryImage)
+class GalleryImageAdmin(admin.ModelAdmin):
+    list_display = ('project',)
 
 @admin.register(FloorPlan)
 class FloorPlanAdmin(admin.ModelAdmin):
-    list_display = ('name', 'project', 'size', 'bedrooms', 'bathrooms', 'image')
-    search_fields = ('name', 'project__name')
+    list_display = ('project', 'name', 'bedrooms', 'bathrooms')

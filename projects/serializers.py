@@ -1,26 +1,79 @@
 from rest_framework import serializers
-from .models import Project, Agent, FloorPlan
+from .models import Project, Agent, FloorPlan, GalleryImage
 
 class AgentSerializer(serializers.ModelSerializer):
+    image = serializers.SerializerMethodField()
+
     class Meta:
         model = Agent
-        fields = ['id', 'name', 'title', 'phone', 'email', 'image']
+        fields = ['name', 'title', 'phone', 'email', 'image']
+
+    def get_image(self, obj):
+        return obj.image.url if obj.image else None
+
+class GalleryImageSerializer(serializers.ModelSerializer):
+    image = serializers.SerializerMethodField()
+
+    class Meta:
+        model = GalleryImage
+        fields = ['image']
+
+    def get_image(self, obj):
+        return obj.image.url if obj.image else None
 
 class FloorPlanSerializer(serializers.ModelSerializer):
+    image = serializers.SerializerMethodField()
+
     class Meta:
         model = FloorPlan
-        fields = ['id', 'name', 'image', 'size', 'bedrooms', 'bathrooms', 'description']
+        fields = [
+            'id',
+            'name',
+            'image',
+            'size',
+            'bedrooms',
+            'bathrooms',
+            'description'
+        ]
+
+    def get_image(self, obj):
+        return obj.image.url if obj.image else None
 
 class ProjectSerializer(serializers.ModelSerializer):
+    image = serializers.SerializerMethodField()
     agent = AgentSerializer()
-    floor_plans = FloorPlanSerializer(many=True)
-    gallery = serializers.ListField(child=serializers.URLField())
+    floorPlans = FloorPlanSerializer(source='floor_plans', many=True)
+    gallery = serializers.SerializerMethodField()
 
     class Meta:
         model = Project
         fields = [
-            'id', 'name', 'location', 'description', 'full_description', 'about_text',
-            'image', 'gallery', 'tags', 'features', 'amenities', 'nearby_amenities',
-            'price', 'property_type', 'size', 'bedrooms', 'bathrooms', 'status',
-            'lat', 'lng', 'agent', 'floor_plans'
+            'id',
+            'name',
+            'location',
+            'description',
+            'full_description',
+            'about_text',
+            'image',
+            'gallery',
+            'price',
+            'property_type',
+            'size',
+            'bedrooms',
+            'bathrooms',
+            'status',
+            'tags',
+            'features',
+            'amenities',
+            'nearby_amenities',
+            'lat',
+            'lng',
+            'agent',
+            'floorPlans'
         ]
+
+    def get_image(self, obj):
+        return obj.image.url if obj.image else None
+
+    def get_gallery(self, obj):
+        return [img.image.url for img in obj.gallery_images.all()]

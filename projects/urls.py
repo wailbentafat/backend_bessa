@@ -1,11 +1,20 @@
-from django.urls import path, include
-from rest_framework.routers import DefaultRouter
-from .views import ProjectViewSet
-
-router = DefaultRouter()
-router.register(r'projects', ProjectViewSet)
-
+from django.urls import path
+from .views import ProjectListAPIView, ProjectDetailAPIView
+from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
 
 urlpatterns = [
-    path('api/', include(router.urls)),
+    # List of all projects
+    path('projects/', ProjectListAPIView.as_view(), name='project-list'),
+
+    # Detail of a single project
+    path('projects/<str:id>/', ProjectDetailAPIView.as_view(), name='project-detail'),
+    
+    # Schema view for OpenAPI documentation
+    path('schema/', SpectacularAPIView.as_view(), name='schema'),
+
+    # Swagger UI documentation
+    path('docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+
+    # ReDoc documentation
+    path('redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
 ]
