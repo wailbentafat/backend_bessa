@@ -15,6 +15,8 @@ from pathlib import Path
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
+from dotenv import load_dotenv
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -32,7 +34,7 @@ cloudinary.config(
 SECRET_KEY = 'django-insecure-)9b0ikxu=hw=m&8g+c%s0d4tyny&d7300=w=@sfdz9b0x^3hc8'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
   '*',
@@ -77,7 +79,7 @@ MIDDLEWARE = [
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
-
+STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 
 ROOT_URLCONF = 'backend_bessa.urls'
@@ -103,16 +105,41 @@ WSGI_APPLICATION = 'backend_bessa.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': os.environ.get('DATABASE_NAME', 'mydb'),
+#         'USER': os.environ.get('DATABASE_USER', 'myuser'),
+#         'PASSWORD': os.environ.get('DATABASE_PASSWORD', 'mypassword'),
+#         'HOST': os.environ.get('DATABASE_HOST', 'localhost'),
+#         'PORT': os.environ.get('DATABASE_PORT', '5432'),
+#     }
+# }
+# Database
+# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('DATABASE_NAME', 'mydb'),
-        'USER': os.environ.get('DATABASE_USER', 'myuser'),
-        'PASSWORD': os.environ.get('DATABASE_PASSWORD', 'mypassword'),
-        'HOST': os.environ.get('DATABASE_HOST', 'localhost'),
-        'PORT': os.environ.get('DATABASE_PORT', '5432'),
+        'NAME': 'neondb',
+        'USER': 'neondb_owner',
+        'PASSWORD': 'npg_mbGP2FXexLr1',
+        'HOST': 'ep-summer-sunset-a4hskwj4-pooler.us-east-1.aws.neon.tech',
+        'PORT': '5432',
+        'OPTIONS': {
+            'sslmode': 'require',
+        },
     }
 }
+CONN_MAX_AGE = 0
 
 # settings.py
 
