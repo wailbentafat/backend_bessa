@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Project, Agent, FloorPlan, GalleryImage
+from .models import Contact, Project, Agent, FloorPlan, GalleryImage
 
 class GalleryImageInline(admin.TabularInline):
     model = GalleryImage
@@ -27,3 +27,11 @@ class GalleryImageAdmin(admin.ModelAdmin):
 @admin.register(FloorPlan)
 class FloorPlanAdmin(admin.ModelAdmin):
     list_display = ('project', 'name', 'bedrooms', 'bathrooms')
+@admin.register(Contact)
+class ContactAdmin(admin.ModelAdmin):
+    list_display = ('name', 'email', 'message')
+    search_fields = ('name', 'email')
+    list_filter = ('created_at',)
+    ordering = ('-created_at',)
+    fields = ('name', 'email', 'phone', 'message')
+    readonly_fields = ('created_at',)

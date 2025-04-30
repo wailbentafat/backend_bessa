@@ -77,3 +77,9 @@ class ProjectSerializer(serializers.ModelSerializer):
 
     def get_gallery(self, obj):
         return [img.image.url for img in obj.gallery_images.all()]
+class ContactSerializer(serializers.Serializer):
+    name = serializers.CharField(min_length=3)
+    email = serializers.EmailField()
+    phone = serializers.CharField(min_length=10)
+    subject = serializers.CharField(min_length=3)
+    message = serializers.CharField(min_length=10)

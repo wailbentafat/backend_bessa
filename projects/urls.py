@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import ProjectListAPIView, ProjectDetailAPIView
+from .views import ProjectListAPIView, ProjectDetailAPIView, contact_submit
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
 
 urlpatterns = [
@@ -17,4 +17,6 @@ urlpatterns = [
 
     # ReDoc documentation
     path('redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
+    path('api/contact/', contact_submit),
 ]
+
